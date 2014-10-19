@@ -1,0 +1,26 @@
+{
+
+  project : {
+    name : '[SQUARE]',
+    version : '0.5',
+    author : 'Eiyeron',
+
+    app : {
+      name : 'square',
+      package : 'com.eiyeron.square'
+    },
+    build : {
+      dependencies : {
+        luxe : '*',
+
+      },
+    },
+ 
+    files : {
+      assets : 'assets/',
+      config : 'config.json'
+    }
+
+  }
+
+}
