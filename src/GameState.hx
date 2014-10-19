@@ -115,12 +115,12 @@ class GameState extends luxe.State {
 		}
 
 		#if web
-		Luxe.audio.volume("music", 0);
+		Luxe.audio.stop("music");
+		
 		#else
-		Actuate.tween(this, 1, {volume:0})
-		.ease(luxe.tween.easing.Linear.easeNone)
-		.onUpdate(changeVolume);
+		Actuate.update(Luxe.audio.volume, 1, ["music", 1], ["music", 0]);
 		#end
+
 		Actuate.tween(Luxe, 1, {timescale:0})
 		.ease(luxe.tween.easing.Expo.easeOut)
 		.onComplete(machine.set, ["Menu"]);
@@ -134,10 +134,6 @@ class GameState extends luxe.State {
 	function addObstacle<T>( data:T ) {
 		obstacles.push( new Obstacle( ));
 		ev.schedule(5, "addObstacle");
-	}
-
-	function changeVolume<T>( data:T ) {
-		Luxe.audio.volume("music", this.volume);
 	}
 
 	function begin() {
@@ -157,10 +153,8 @@ class GameState extends luxe.State {
 			#if web
 			Luxe.audio.volume("music", 1);
 			#else
-			Luxe.audio.volume("music", 0);
-			Actuate.tween(this, 0.5, {volume:1})
-			.ease(luxe.tween.easing.Linear.easeNone)
-			.onUpdate(changeVolume);				
+			Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
+	
 			#end
 			Luxe.audio.loop('music');
 			});
