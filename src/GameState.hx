@@ -103,9 +103,11 @@ class GameState extends luxe.State {
 		started = false;
 
 		var save = new LocalSave();
-		if(save.isLocalStorageSupported()) {
+		if(save.isLocalSaveSupported()) {
 			var existingScore:String = save.loadData(highscoreKey);
-			if(existingScore == null || Std.parseFloat(existingScore) < this.score) {
+			var scoreFromFile:Float = 0;
+			scoreFromFile = Std.parseFloat(existingScore);
+			if(Math.isNaN(scoreFromFile) || scoreFromFile < this.score) {
 				trace("New highscore : " + this.score);
 				save.saveData(highscoreKey, Std.string(this.score));
 			}

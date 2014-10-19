@@ -72,6 +72,7 @@ class MenuState extends luxe.State {
 			0xdedede,
 			TextAlign.left);
 		highscore.color.a = 0;
+
 		g = new GameState({name:'Game', cube:cube});
 		machine.add( g );
 	}
@@ -102,14 +103,12 @@ class MenuState extends luxe.State {
 			i++;
 		}
 
-		if(localStrg.isLocalStorageSupported()) {
-			var score:Int = Std.int(Std.parseFloat(localStrg.loadData(GameState.highscoreKey)));
-			highscoreString = "Highscore : " + Std.string(score);
+		if(localStrg.isLocalSaveSupported()) {
+			var score:Float = Std.parseFloat(localStrg.loadData(GameState.highscoreKey));
+			highscoreString = "Highscore : " + (Math.isNaN(score) ? "0" : Std.string(Std.int(score)));
 			highscore.text = highscoreString;
 		}
 		highscore.fadeIn(new Vector(0,0), 0.5, 1.5);
-
-
 
 		ev.schedule(1.8, "ready");
 		cube.animBigger(1);
