@@ -8,16 +8,17 @@
  import sys.io.FileInput;
  import sys.io.FileOutput;
  import sys.FileSystem;
- import haxe.Json;
+ // import haxe.Json; // Not being used at this moment.
 
  #end
  /**
  * This class is made to save game data as a binary file in desktop targets and Browser DOM Storage for HTML target
  * TODO : Compress the saved content with some huffman comrpession as it's in the standard lib.
- * TODO : JSON?
  * TODO : Read config.json to fecth the save location.
  * TODO : Non static save locations.
  * TODO : Android (as the rest of the game :-°)
+ * TODO?: JSON
+ * TODO?: Singleton
  */
  class LocalSave {
 
@@ -33,6 +34,7 @@
  	public function isLocalSaveSupported():Bool {
  		#if web
  		return browserStorage != null;
+
  		#else
  		return ready;
  		#end
@@ -46,7 +48,8 @@
  		browserStorage = Browser.getLocalStorage();
  		if( !isLocalSaveSupported())
  		trace("Local Storage unsupported. Won't be able to save anything.");
- 		#else
+
+ 		#elseif desktop
  		ready = true;
  		if( !FileSystem.exists(pathToFile)) {
  			FileSystem.createDirectory(pathToFile);
@@ -71,13 +74,14 @@
  		}
  		#if web
  		return browserStorage.getItem(key);
- 		#else 
- 		try {
 
- 		return File.getContent(pathToFile + filename);
- 		} catch ( e:Dynamic) {
- 			trace("Loading Error : +"e);
- 			trace("Disabling save/load on this instane.");
+ 		#elseif desktop
+ 		try {
+ 			return File.getContent(pathToFile + filename);
+ 		}
+ 		catch ( e:Dynamic ) {
+ 			trace("Loading Error : " + e);
+ 			trace("Disabling save/load on this instance.");
  			ready = false;
  			return "Error.";
  		}
@@ -89,20 +93,19 @@
  		if( !isLocalSaveSupported()) {
  			trace("Saving not supportd on this target");
  			return;
-
  		}
 
  		#if web
  		if( isLocalSaveSupported())
  		browserStorage.setItem(key, data);
 
- 		#else
+ 		#elseif desktop
  		try{
  			File.saveContent(pathToFile + filename, data); 			
  		}
  		catch(e:Dynamic) {
  			trace("Saving Error: " + e);
- 			trace("Disabling save/load on this instane.");
+ 			trace("Disabling save/load on this instance.");
  			ready = false;
  		}
  		#end
