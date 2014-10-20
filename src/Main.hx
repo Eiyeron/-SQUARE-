@@ -36,10 +36,10 @@ class Main extends luxe.Game {
         //this is a default one, you can do your own
         progress = new ParcelProgress({
             parcel      : preload,
-            background  : new Color().rgb(0x2D2D2D),
+            background  : new Color(0, 0, 0, 0),
             bar         : new Color().rgb(0xD64927),
             bar_border  : new Color().rgb(0xDEDEDE),
-            oncomplete  : loadEverything,
+            oncomplete  : launchEverything,
             fade_in     : false,
             fade_out    : true
             });
@@ -47,13 +47,15 @@ class Main extends luxe.Game {
         preload.load();
 
 
-        machine = new States({name: "machine"});
-        menuState =  new MenuState({name:'Menu', machine:machine, cube:cube});
-        machine.add(menuState);
 
     } //ready
 
-    function loadEverything( parcel:Parcel ) {
+    function launchEverything( parcel:Parcel ) {
+        trace(parcel.fonts.toString( ));
+        machine = new States({name: "machine"});
+        menuState =  new MenuState({name:'Menu', machine:machine, cube:cube});
+        menuState.init();
+        machine.add(menuState);
         Actuate.reset();
         machine.set('Menu');
     }

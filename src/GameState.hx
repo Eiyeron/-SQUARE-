@@ -39,7 +39,7 @@ class GameState extends luxe.State {
 		obstacles = new Array<Obstacle>();
 		bonuses = new Array<Bonus>();
 		ev = new Events();
-		font = Luxe.loadFont('open_sans.fnt', 'assets/open_sans/');
+		font = Luxe.resources.find_font('open_sans');
 		score_txt = new MenuText(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 50),
 			"0", font, 96, 0xD64937);
 		score_txt.color.a = 0;

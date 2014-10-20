@@ -44,9 +44,10 @@ class MenuState extends luxe.State {
 	}
 
 	override function init() {
+		trace("begin init");
 		menu_text = ["Click", "to", "Play", "[By Eiyeron]"];
 		menu_objs = new Array<MenuText>();
-		font = /*Luxe.loadFont('open_sans.fnt', 'assets/open_sans/');*/Luxe.resources.find_font('open_sans');
+		font = Luxe.resources.find_font('open_sans');
 
 		title = new MenuText(
 			new Vector(Luxe.screen.w*4.7/6, Luxe.screen.h/5),
@@ -75,6 +76,7 @@ class MenuState extends luxe.State {
 
 		g = new GameState({name:'Game', cube:cube});
 		machine.add( g );
+		trace("end of init");
 	}
 
 	function readyToPlay<T>( _data:T ) {
@@ -82,12 +84,12 @@ class MenuState extends luxe.State {
 	}
 
 	override function onenter<T>( _data:T ) {
+		trace("begin onenter");
 		readyPlay = false;
 		Luxe.timescale = 1;
 
 
 		Actuate.tween(cube.pos, 0.5, {x:Luxe.screen.mid.x/4., y:Luxe.screen.mid.y});
-
 		title.fadeIn(
 			new Vector(Luxe.screen.w*4.5/6, title.pos.y),
 			0.5, 1.5
