@@ -11,6 +11,9 @@ import luxe.collision.Collision;
 
 import io.LocalSave;
 
+import components.Hitbox;
+import components.MovingEntity;
+
 typedef GameStateTypedArgs = {
 	name : String,
 	cube : CubeTransition
@@ -38,7 +41,7 @@ class GameState extends luxe.State {
 		ev = new Events();
 		font = Luxe.loadFont('open_sans.fnt', 'assets/open_sans/');
 		score_txt = new MenuText(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 50),
-			"A", font, 96, 0xD64937);
+			"0", font, 96, 0xD64937);
 		score_txt.color.a = 0;
 		score_txt.depth = -0.5;
 		volume = 0;
@@ -65,13 +68,18 @@ class GameState extends luxe.State {
 
 	override function onleave<T>( data:T ) {
 		Luxe.audio.stop("music");
-		while(obstacles.length != 0)
+		while(obstacles.length > 0)
 		obstacles.pop().destroy();
-		while(bonuses.length != 0)
+		while(bonuses.length > 0)
 		bonuses.pop().destroy();
 		ev.clear();
 		score_txt.fadeOut();
 
+	}
+
+
+	private function hasCollidedToCube(spr:Sprite):Bool {
+		return Hitbox.testCollisionBetweenHitboxes(cast(cube.components.get("hitbox"), Hitbox), cast(spr.components.get("hitbox"), Hitbox));
 	}
 
 	override function update( delta:Float) {
@@ -79,22 +87,18 @@ class GameState extends luxe.State {
 		if( !started) return;
 		score += delta;
 		score_txt.text = Std.string(Std.int(score));
-		for( i in obstacles) {
-			var res = Collision.test(cast(cube.components.get("hitbox"), components.Hitbox).boundingBox, cast(i.components.get("hitbox"), components.Hitbox).boundingBox);
-			if( res != null) {
-				ev.queue("gameOver");
-				break;			
-			}
+
+		if(Lambda.exists(obstacles, hasCollidedToCube)) {
+			ev.queue("gameOver");			
 		}
-		for( i in bonuses) {
-			var res = Collision.test(cast(cube.components.get("hitbox"), components.Hitbox).boundingBox, cast(i.components.get("hitbox"), components.Hitbox).boundingBox);
-			if( res != null) {
-				// TODO UGLYYY, should use a caller or something in that idea.
-				cast(i.components.get("move"), components.MovingEntity).replace( );
-				score += 10;
-				break;
-			}
-		}
+
+		var bonusesCollected = Lambda.filter(bonuses, hasCollidedToCube);
+
+		Lambda.map( bonusesCollected, function( i ) {
+			cast(i.components.get("move"), MovingEntity).replace( );
+			score += 10;
+			});
+
 		ev.process();
 	}
 

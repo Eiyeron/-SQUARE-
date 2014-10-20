@@ -1,5 +1,6 @@
 package components;
 
+import luxe.collision.Collision;
 import luxe.collision.shapes.Polygon;
 import luxe.Component;
 import luxe.Vector;
@@ -20,5 +21,10 @@ class Hitbox extends Component {
 		boundingBox.position.copy_from(entity.pos);
 		this.boundingBox.rotation = entity.rotation.z;
 	}
+
+	public static function testCollisionBetweenHitboxes(a:Hitbox, b:Hitbox):Bool {
+		return Collision.test(a.boundingBox, b.boundingBox) != null;
+	}
+
 
 }
