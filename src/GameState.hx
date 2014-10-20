@@ -92,9 +92,7 @@ class GameState extends luxe.State {
 			ev.queue("gameOver");			
 		}
 
-		var bonusesCollected = Lambda.filter(bonuses, hasCollidedToCube);
-
-		Lambda.map( bonusesCollected, function( i ) {
+		Lambda.map( Lambda.filter(bonuses, hasCollidedToCube), function( i ) {
 			cast(i.components.get("move"), MovingEntity).replace( );
 			score += 10;
 			});
@@ -107,6 +105,7 @@ class GameState extends luxe.State {
 		started = false;
 
 		var save = new LocalSave();
+		// TODO make the save more clear here. Process more conditions on the LocalSave
 		if(save.isLocalSaveSupported()) {
 			var existingScore:String = save.loadData(highscoreKey);
 			var scoreFromFile:Float = 0;
@@ -153,6 +152,7 @@ class GameState extends luxe.State {
 		addObstacle( null );
 		addBonus( null );
 
+		// TODO : Use the resources loaded with the preloader to avoid code inconstitencies.
 		Luxe.audio.on('music', 'load', function(s:luxe.Sound) {
 			#if web
 			Luxe.audio.volume("music", 1);
