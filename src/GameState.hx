@@ -13,17 +13,18 @@ import io.LocalSave;
 
 import components.Hitbox;
 import components.MovingEntity;
+import components.RotatingEntity;
 
 typedef GameStateTypedArgs = {
 	name : String,
-	cube : CubeTransition
+	cube : PlayerSquare
 }
 
 class GameState extends luxe.State {
 
 	public static inline var highscoreKey:String =" [SQUARE] highscore";
 
-	private var cube     : CubeTransition;
+	private var cube     : PlayerSquare;
 	private var started  : Bool;
 	private var obstacles: Array<Obstacle>;
 	private var bonuses  : Array<Bonus>;
@@ -48,7 +49,6 @@ class GameState extends luxe.State {
 
 	}
 
-
 	override function init<T>() {
 		started = false;
 		ev.listen("addBonus", addBonus);
@@ -59,9 +59,9 @@ class GameState extends luxe.State {
 		score_txt.fadeIn(Luxe.screen.mid, 1);
 	}
 
-
 	override function onenter<T>( data:T ) {
 		cube.animSmaller(0);
+		cast(cube.get("rotation"), RotatingEntity).setNewVelocity(-40);
 		Actuate.tween(cube.pos, 0.25, {x:Luxe.mouse.x, y:Luxe.mouse.y})
 		.onComplete(begin);
 	}
@@ -77,69 +77,31 @@ class GameState extends luxe.State {
 
 	}
 
-
 	private function hasCollidedToCube(spr:Sprite):Bool {
 		return Hitbox.testCollisionBetweenHitboxes(cast(cube.components.get("hitbox"), Hitbox), cast(spr.components.get("hitbox"), Hitbox));
 	}
 
-	override function update( delta:Float) {
-		cube.rotation_z -= 40 * delta;
-		if( !started) return;
-		score += delta;
-		score_txt.text = Std.string(Std.int(score));
-
-		if(Lambda.exists(obstacles, hasCollidedToCube)) {
-			ev.queue("gameOver");			
-		}
-
-		Lambda.map( Lambda.filter(bonuses, hasCollidedToCube), function( i ) {
-			cast(i.components.get("move"), MovingEntity).replace( );
-			score += 10;
-			});
-
-		ev.process();
-	}
-
-	function gameOver<T>( data:T ) {
-		Luxe.audio.play('hit');
-		started = false;
-
-		var save = new LocalSave();
-		// TODO make the save more clear here. Process more conditions on the LocalSave
-		if(save.isLocalSaveSupported()) {
-			var existingScore:String = save.loadData(highscoreKey);
-			var scoreFromFile:Float = 0;
-			scoreFromFile = Std.parseFloat(existingScore);
-			if(Math.isNaN(scoreFromFile) || scoreFromFile < this.score) {
-				trace("New highscore : " + this.score);
-				save.saveData(highscoreKey, Std.string(this.score));
-			}
-
-		}
-
-		#if web
-		Luxe.audio.stop("music");
-
-		#else
-		Actuate.update(Luxe.audio.volume, 1, ["music", 1], ["music", 0]);
-		#end
-
-		Actuate.tween(Luxe, 1, {timescale:0})
-		.ease(luxe.tween.easing.Expo.easeOut)
-		.onComplete(machine.set, ["Menu"]);
-	}
-
-	function addBonus<T>( data:T ) {
+	private function addBonus<T>( data:T ) {
 		bonuses.push( new Bonus( ));
 		ev.schedule(8 + Maths.random_float(0, 8), "addBonus");
 	}
 
-	function addObstacle<T>( data:T ) {
+	private function addObstacle<T>( data:T ) {
 		obstacles.push( new Obstacle( ));
 		ev.schedule(5 + Maths.random_float(0, 2), "addObstacle");
 	}
 
-	function begin() {
+	private function fadeInMusic( ) {
+		Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
+		Luxe.audio.loop('music');
+	}
+
+	private function fadeOutMusic( ) {
+		Actuate.update(Luxe.audio.volume, 1, ["music", 1], ["music", 0])
+		.onComplete(Luxe.audio.stop, ["music"]);
+	}
+
+	private function begin() {
 		started = true;
 		for( i in 0 ... 5 ) {
 			var obs:Obstacle = new Obstacle();
@@ -151,19 +113,52 @@ class GameState extends luxe.State {
 		}
 		addObstacle( null );
 		addBonus( null );
+		fadeInMusic();
 
-		// TODO : Use the resources loaded with the preloader to avoid code inconstitencies.
-		Luxe.audio.on('music', 'load', function(s:luxe.Sound) {
-			#if web
-			Luxe.audio.volume("music", 1);
-
-			#else
-			Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
-			#end
-			Luxe.audio.loop('music');
-			});
 	}
-	
+
+	override function update( delta:Float) {
+		if( !started) return;
+		score += delta;
+		score_txt.text = Std.string(Std.int(score));
+
+		if(Lambda.exists(obstacles, hasCollidedToCube)) {
+			ev.queue("gameOver");			
+		}
+
+		Lambda.map( Lambda.filter(bonuses, hasCollidedToCube), function( i ) {
+			cast(i.components.get("move"), MovingEntity).replace( );
+			score += 10;
+			Luxe.audio.play('bleep');
+			});
+
+		ev.process();
+	}
+
+	private function gameOver<T>( data:T ) {
+		Luxe.audio.play('hit');
+		started = false;
+
+		var save = new LocalSave();
+		// TODO : make the save more clear here. Process more conditions on the LocalSave
+		if(save.isLocalSaveSupported()) {
+			var existingScore:String = save.loadData(highscoreKey);
+			var scoreFromFile:Float = 0;
+			scoreFromFile = Std.parseFloat(existingScore);
+			if(Math.isNaN(scoreFromFile) || scoreFromFile < this.score) {
+				trace("New highscore : " + this.score);
+				save.saveData(highscoreKey, Std.string(this.score));
+			}
+
+		}
+
+		fadeOutMusic();
+
+		Actuate.tween(Luxe, 1, {timescale:0})
+		.ease(luxe.tween.easing.Expo.easeOut)
+		.onComplete(machine.set, ["Menu"]);
+	}
+
 	override function ontouchmove( event:TouchEvent) {
 		cube.pos = event.pos;
 	}

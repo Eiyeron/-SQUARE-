@@ -6,6 +6,7 @@ import luxe.utils.Maths;
 
 import components.MovingEntity;
 import components.Hitbox;
+import components.RotatingEntity;
 
 class Bonus extends luxe.Sprite {
 	public static inline var OFFSET:Int = 40;
@@ -19,11 +20,8 @@ class Bonus extends luxe.Sprite {
 		active = false;
 		add(new MovingEntity({name:"move"}));
 		add(new Hitbox("hitbox", size));
+		add(new RotatingEntity("rotation", 20));
 		active = true;
 		this.rotation_z = Maths.random_float(0, 360);
-	}
-
-	public override function update(dt:Float) {
-		this.rotation_z += 20*dt;
 	}
 }

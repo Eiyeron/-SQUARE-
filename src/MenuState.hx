@@ -12,13 +12,13 @@ import io.LocalSave;
 typedef MenuStateTypedArgs = {
 	name : String,
 	machine: States,
-	cube : CubeTransition
+	cube : PlayerSquare
 
 }
 
 class MenuState extends luxe.State {
 
-	public var cube     : CubeTransition;
+	public var cube     : PlayerSquare;
 	public var title    : MenuText;
 	public var menu_text: Array<String>;
 	public var menu_objs: Array<MenuText>;
@@ -136,7 +136,8 @@ class MenuState extends luxe.State {
 
     override function update( delta:Float ) {
     	if( cube != null ) {
-    		cube.rotation_z += 60 * delta;
+    		//cube.rotation_z += 60 * delta;
+    		trace(cube.rotation_z);
     	}
     }
 

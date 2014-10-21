@@ -8,6 +8,7 @@
     "sounds" : [
  	{ "id" : "assets/sounds/hit.wav", "name" : "hit", "is_stream" : false },
  	{ "id" : "assets/sounds/hit2.wav", "name" : "hit2", "is_stream" : false },
+ 	{ "id" : "assets/sounds/bleep.wav", "name" : "bleep", "is_stream" : false },
  	{ "id" : "assets/music/instant_crush.ogg", "name" : "music", "is_stream" : true }
     ]
 }

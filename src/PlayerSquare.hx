@@ -9,7 +9,7 @@ import luxe.collision.ShapeDrawerLuxe;
 
 import components.Hitbox;
 
-class CubeTransition extends luxe.Sprite {
+class PlayerSquare extends luxe.Sprite {
 	private var _scaleBig     : Float;
 	private var _scaleTiny    : Float;
 	private var _scaleDelta   : Float;

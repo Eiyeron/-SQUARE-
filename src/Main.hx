@@ -16,13 +16,13 @@ class Main extends luxe.Game {
     public var progress : ParcelProgress;
     public var machine  : States;
     public var menuState: MenuState;
-    public var cube     : CubeTransition;
+    public var cube     : PlayerSquare;
 
     override function ready() {
         Luxe.renderer.clear_color.rgb(0x2D2D2D);
-        cube = new CubeTransition(Luxe.screen.mid, 1, 16);
+        cube = new PlayerSquare(Luxe.screen.mid, 1, 16);
+        cube.add(new components.RotatingEntity("rotation", 60));
         Actuate.tween(cube.pos, 1, {y:Luxe.screen.mid.y/2,}).ease( luxe.tween.easing.Sine.easeOut ).repeat().reflect();
-        Actuate.tween(cube, 1, {rotation_z:60,}).ease( luxe.tween.easing.Linear.easeNone ).repeat();
 
         var json_asset = Luxe.loadJSON('assets/parcel.json');
 
