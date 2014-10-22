@@ -8,7 +8,7 @@ import components.MovingEntity;
 import components.Hitbox;
 import components.RotatingEntity;
 
-class Bonus extends luxe.Sprite {
+class Pickup extends luxe.Sprite {
 	public static inline var OFFSET:Int = 40;
 
 	public function new() {

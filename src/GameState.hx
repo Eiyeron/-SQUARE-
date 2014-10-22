@@ -27,7 +27,7 @@ class GameState extends luxe.State {
 	private var cube     : PlayerSquare;
 	private var started  : Bool;
 	private var obstacles: Array<Obstacle>;
-	private var bonuses  : Array<Bonus>;
+	private var bonuses  : Array<Pickup>;
 	private var ev       : Events;
 	private var score    : Float;
 	private var score_txt: MenuText;
@@ -38,7 +38,7 @@ class GameState extends luxe.State {
 		super({ name:data.name });
 		cube = data.cube;
 		obstacles = new Array<Obstacle>();
-		bonuses = new Array<Bonus>();
+		bonuses = new Array<Pickup>();
 		ev = new Events();
 		font = Luxe.resources.find_font('open_sans');
 		score_txt = new MenuText(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 50),
@@ -51,7 +51,7 @@ class GameState extends luxe.State {
 
 	override function init<T>() {
 		started = false;
-		ev.listen("addBonus", addBonus);
+		ev.listen("addPickup", addPickup);
 		ev.listen("addObstacle", addObstacle);
 		ev.listen("gameOver", gameOver);
 		score_txt.text = "0";
@@ -81,9 +81,9 @@ class GameState extends luxe.State {
 		return Hitbox.testCollisionBetweenHitboxes(cast(cube.components.get("hitbox"), Hitbox), cast(spr.components.get("hitbox"), Hitbox));
 	}
 
-	private function addBonus<T>( data:T ) {
-		bonuses.push( new Bonus( ));
-		ev.schedule(8 + Maths.random_float(0, 8), "addBonus");
+	private function addPickup<T>( data:T ) {
+		bonuses.push( new Pickup( ));
+		ev.schedule(8 + Maths.random_float(0, 8), "addPickup");
 	}
 
 	private function addObstacle<T>( data:T ) {
@@ -108,11 +108,11 @@ class GameState extends luxe.State {
 			obstacles.push(obs);
 		}
 		for( i in 0 ... 5 ) {
-			var obs:Bonus = new Bonus();
+			var obs:Pickup = new Pickup();
 			bonuses.push(obs);
 		}
 		addObstacle( null );
-		addBonus( null );
+		addPickup( null );
 		fadeInMusic();
 
 	}
