@@ -48,7 +48,6 @@ class GameState extends luxe.State {
 			"0", font, 96, 0xD64937);
 		score_txt.color.a = 0;
 		score_txt.depth = -0.5;
-		volume = 0;
 		eManager = new EffectManager();
 
 	}
@@ -61,6 +60,7 @@ class GameState extends luxe.State {
 		score_txt.text = "0";
 		score = 0;	
 		score_txt.fadeIn(Luxe.screen.mid, 1);
+		volume = 0;
 	}
 
 	override function onenter<T>( data:T ) {
@@ -96,13 +96,21 @@ class GameState extends luxe.State {
 	}
 
 	private function fadeInMusic( ) {
-		Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
 		Luxe.audio.loop('music');
+		#if web
+		Luxe.audio.volume("music", 1);
+		#else
+		Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
+		#end
 	}
 
 	private function fadeOutMusic( ) {
+		#if web
+		Luxe.audio.stop('music');
+		#else
 		Actuate.update(Luxe.audio.volume, 1, ["music", 1], ["music", 0])
 		.onComplete(Luxe.audio.stop, ["music"]);
+		#end
 	}
 
 	private function begin() {
@@ -134,7 +142,7 @@ class GameState extends luxe.State {
 			cast(i.components.get("move"), MovingEntity).replace( );
 			score += 10;
 			Luxe.audio.play('bleep');
-			//if(Maths.random_int(0,10) == 0)
+			if(Maths.random_int(0, 50) == 0)
 				eManager.start("slowmotion");
 			});
 

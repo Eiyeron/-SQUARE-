@@ -38,8 +38,6 @@ class EffectManager extends Entity{
 		effects.push(new SlowMotion());
 		for(comp in effects)
 			add( comp );
-
-		trace(this.children);
 	}
 
 	public function getEffect( name: String):TimedBonus {
@@ -47,6 +45,7 @@ class EffectManager extends Entity{
 	}
 
 	public function start(name : String) {
+		
 		var effect:TimedBonus = getEffect(name);
 		effect.start();
 
