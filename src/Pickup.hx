@@ -17,10 +17,13 @@ class Pickup extends luxe.Sprite {
 			size : new Vector(24, 24),
 			pos  : new Vector(-OFFSET, -OFFSET)
 			});
+
 		active = false;
 		add(new MovingEntity({name:"move"}));
 		add(new Hitbox("hitbox", size));
 		add(new RotatingEntity("rotation", 20));
+
+
 		active = true;
 		this.rotation_z = Maths.random_float(0, 360);
 	}

@@ -135,10 +135,6 @@ class MenuState extends luxe.State {
     }
 
     override function update( delta:Float ) {
-    	if( cube != null ) {
-    		//cube.rotation_z += 60 * delta;
-    		trace(cube.rotation_z);
-    	}
     }
 
 

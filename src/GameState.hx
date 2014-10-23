@@ -11,6 +11,8 @@ import luxe.collision.Collision;
 
 import io.LocalSave;
 
+import effects.EffectManager;
+
 import components.Hitbox;
 import components.MovingEntity;
 import components.RotatingEntity;
@@ -33,6 +35,7 @@ class GameState extends luxe.State {
 	private var score_txt: MenuText;
 	private var font     : BitmapFont;
 	private var volume   : Float;
+	private var eManager : EffectManager;
 
 	public function new( data:GameStateTypedArgs ) {
 		super({ name:data.name });
@@ -46,6 +49,7 @@ class GameState extends luxe.State {
 		score_txt.color.a = 0;
 		score_txt.depth = -0.5;
 		volume = 0;
+		eManager = new EffectManager();
 
 	}
 
@@ -130,6 +134,8 @@ class GameState extends luxe.State {
 			cast(i.components.get("move"), MovingEntity).replace( );
 			score += 10;
 			Luxe.audio.play('bleep');
+			//if(Maths.random_int(0,10) == 0)
+				eManager.start("slowmotion");
 			});
 
 		ev.process();
@@ -152,9 +158,11 @@ class GameState extends luxe.State {
 
 		}
 
+		eManager.endAll();
+
 		fadeOutMusic();
 
-		Actuate.tween(Luxe, 1, {timescale:0})
+		Actuate.tween(Luxe, 1, {timescale:0}, true)
 		.ease(luxe.tween.easing.Expo.easeOut)
 		.onComplete(machine.set, ["Menu"]);
 	}
