@@ -12,13 +12,11 @@ class SlowMotion extends TimedBonus {
 	}
 
 	public override function start() {
-		trace("begin of slowmo");
 		super.start();
 		Actuate.tween(Luxe, 0.5, {timescale: 0.5});
 	}
 
 	public override function end() {
-		trace("end of slowmo");
 		super.end();
 		Actuate.tween(Luxe, 0.5, {timescale: 1});	
 	}

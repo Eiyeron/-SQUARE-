@@ -27,7 +27,7 @@ class EffectManager extends Entity{
 		countdownSprite.color.a = 1;
 		countdownSprite.parent = this;
 		text = new MenuText(
-			new Vector(Luxe.screen.mid.x, Luxe.screen.h / 4 + 10),
+			new Vector(Luxe.screen.mid.x, Luxe.screen.h / 4 + 20),
 			"",
 			Luxe.resources.find_font('open_sans'),
 			32, 0x333333
@@ -61,15 +61,18 @@ class EffectManager extends Entity{
 	}
 
 
-	public function end(name:String) {
-		var effect:TimedBonus = getEffect(name);
-		effect.end();
+	public function end(name:String = null) {
 		Actuate.tween(countdownSprite.color, 0.5, {a : 0});
 		text.fadeOut(0.5);
+		if( name == null) return;
+		var effect:TimedBonus = getEffect(name);
+		effect.end();
 	}
 
 	public function endAll() {
 		for(comp in effects)
-			end(comp.name);
+			if( comp.isRunning())
+				comp.end();
+		end();
 	}
 }
