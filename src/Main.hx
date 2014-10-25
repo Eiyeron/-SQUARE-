@@ -13,16 +13,16 @@ import phoenix.BitmapFont;
 
 class Main extends luxe.Game {
 
-    public var progress : ParcelProgress;
-    public var machine  : States;
-    public var menuState: MenuState;
-    public var cube     : PlayerSquare;
+    private var _machine   : States;
+    private var _menuState : MenuState;
+    private var _progress  : ParcelProgress;
+    private var _square    : PlayerSquare;
 
     override function ready() {
         Luxe.renderer.clear_color.rgb(0x2D2D2D);
-        cube = new PlayerSquare(Luxe.screen.mid, 1, 16);
-        cube.add(new components.RotatingEntity("rotation", 60));
-        Actuate.tween(cube.pos, 1, {y:Luxe.screen.mid.y/2,}).ease( luxe.tween.easing.Sine.easeOut ).repeat().reflect();
+        _square = new PlayerSquare(Luxe.screen.mid, 1, 16);
+        _square.add(new components.RotatingEntity("rotation", 60));
+        Actuate.tween(_square.pos, 1, {y:Luxe.screen.mid.y/2,}).ease( luxe.tween.easing.Sine.easeOut ).repeat().reflect();
 
         var json_asset = Luxe.loadJSON('assets/parcel.json');
 
@@ -34,7 +34,7 @@ class Main extends luxe.Game {
 
         //but, we also want a progress bar for the parcel,
         //this is a default one, you can do your own
-        progress = new ParcelProgress({
+        _progress = new ParcelProgress({
             parcel      : preload,
             background  : new Color(0, 0, 0, 0),
             bar         : new Color().rgb(0xD64927),
@@ -52,12 +52,12 @@ class Main extends luxe.Game {
 
     function launchEverything( parcel:Parcel ) {
         trace(parcel.fonts.toString( ));
-        machine = new States({name: "machine"});
-        menuState =  new MenuState({name:'Menu', machine:machine, cube:cube});
-        menuState.init();
-        machine.add(menuState);
+        _machine = new States({name: "machine"});
+        _menuState =  new MenuState({name:'Menu', machine:_machine, square:_square});
+        _menuState.init();
+        _machine.add(_menuState);
         Actuate.reset();
-        machine.set('Menu');
+        _machine.set('Menu');
     }
 
 

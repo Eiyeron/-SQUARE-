@@ -9,9 +9,10 @@ typedef TimedBonusTypedArgs = {
 
 class TimedBonus extends Component {
 
-	public var text:String;
+	private var _isRunning            : Bool;
+	
 	public var countdownStartingValue : Float;
-	private var _isRunning:Bool;
+	public var text                   : String;
 
 	public function new(data:TimedBonusTypedArgs) {
 		super({name : data.name});

@@ -12,70 +12,70 @@ import io.LocalSave;
 typedef MenuStateTypedArgs = {
 	name : String,
 	machine: States,
-	cube : PlayerSquare
+	square : PlayerSquare
 
 }
 
 class MenuState extends luxe.State {
 
-	public var cube     : PlayerSquare;
-	public var title    : MenuText;
-	public var menu_text: Array<String>;
-	public var menu_objs: Array<MenuText>;
-	public var highscore: MenuText;
-	public var highscoreString:String;	
-	public var font     : BitmapFont;
-	public var g        : GameState;
-	public var localStrg: LocalSave;
+	private var _font            : BitmapFont;
+	private var _g               : GameState;
+	private var _highscore       : MenuText;
+	private var _highscoreString : String;	
+	private var _localStrg       : LocalSave;
+	private var _menu_objs       : Array<MenuText>;
+	private var _menu_text       : Array<String>;
+	private var _square          : PlayerSquare;
+	private var _title           : MenuText;
 
 
 	private var ev:Events;
 	public var readyPlay: Bool;
 
 
-	public function new( _data:MenuStateTypedArgs ) {
-		super({ name:_data.name });
-		machine = _data.machine;
-		cube = _data.cube;
+	public function new( data:MenuStateTypedArgs ) {
+		super({ name:data.name });
+		machine = data.machine;
+		_square = data.square;
 		ev = new Events();
 		ev.listen("ready", readyToPlay);
-		localStrg = new LocalSave();
+		_localStrg = new LocalSave();
 
 	}
 
 	override function init() {
 		trace("begin init");
-		menu_text = ["Click", "to", "Play", "[By Eiyeron]"];
-		menu_objs = new Array<MenuText>();
-		font = Luxe.resources.find_font('open_sans');
+		_menu_text = ["Click", "to", "Play", "[By Eiyeron]"];
+		_menu_objs = new Array<MenuText>();
+		_font = Luxe.resources.find_font('open_sans');
 
-		title = new MenuText(
+		_title = new MenuText(
 			new Vector(Luxe.screen.w*4.7/6, Luxe.screen.h/5),
-			'[SQUARE]', font, 40, 0xdedede
+			'[SQUARE]', _font, 40, 0xdedede
 			);
-		title.color.a = 0;
+		_title.color.a = 0;
 
 		var i:Int = 0;
-		for( line in menu_text ) {
+		for( line in _menu_text ) {
 			var text_line = new MenuText(
 				new Vector(Luxe.screen.w*4.7/6, 2*Luxe.screen.h/5 + Luxe.screen.h*i/8),
-				line, font, 30, 0xdedede
+				line, _font, 30, 0xdedede
 				);
 			text_line.color.a = 0;
-			menu_objs.push(text_line);
+			_menu_objs.push(text_line);
 			i++;
 		}
-		highscoreString = "Highscore unsupported here";
-		highscore = new MenuText(new Vector(-Luxe.screen.w/6,0), 
-			highscoreString,
-			font,
+		_highscoreString = "Highscore unsupported here";
+		_highscore = new MenuText(new Vector(-Luxe.screen.w/6,0), 
+			_highscoreString,
+			_font,
 			24,
 			0xdedede,
 			TextAlign.left);
-		highscore.color.a = 0;
+		_highscore.color.a = 0;
 
-		g = new GameState({name:'Game', cube:cube});
-		machine.add( g );
+		_g = new GameState({name:'Game', square:_square});
+		machine.add( _g );
 		trace("end of init");
 	}
 
@@ -89,15 +89,15 @@ class MenuState extends luxe.State {
 		Luxe.timescale = 1;
 
 
-		Actuate.tween(cube.pos, 0.5, {x:Luxe.screen.mid.x/4., y:Luxe.screen.mid.y});
-		title.fadeIn(
-			new Vector(Luxe.screen.w*4.5/6, title.pos.y),
+		Actuate.tween(_square.pos, 0.5, {x:Luxe.screen.mid.x/4., y:Luxe.screen.mid.y});
+		_title.fadeIn(
+			new Vector(Luxe.screen.w*4.5/6, _title.pos.y),
 			0.5, 1.5
 			);
 
 
 		var i:Int = 1;
-		for( text_line in menu_objs ) {
+		for( text_line in _menu_objs ) {
 			text_line.fadeIn(
 				new Vector(Luxe.screen.w*4.5/6, text_line.pos.y),
 				0.5, 1.5 + 0.1*i
@@ -105,32 +105,32 @@ class MenuState extends luxe.State {
 			i++;
 		}
 
-		if(localStrg.isLocalSaveSupported()) {
-			var score:Float = Std.parseFloat(localStrg.loadData(GameState.highscoreKey));
-			highscoreString = "Highscore : " + (Math.isNaN(score) ? "0" : Std.string(Std.int(score)));
-			highscore.text = highscoreString;
+		if(_localStrg.isLocalSaveSupported()) {
+			var score:Float = Std.parseFloat(_localStrg.loadData(GameState.highscoreKey));
+			_highscoreString = "Highscore : " + (Math.isNaN(score) ? "0" : Std.string(Std.int(score)));
+			_highscore.text = _highscoreString;
 		}
-		highscore.fadeIn(new Vector(0,0), 0.5, 1.5);
+		_highscore.fadeIn(new Vector(0,0), 0.5, 1.5);
 
 		ev.schedule(1.8, "ready");
-		cube.animBigger(1);
+		_square.animBigger(1);
     } //ready
 
     override function onleave<T>( _data:T ) {
-    	title.fadeOut(
+    	_title.fadeOut(
     		0.5, 0
     		);
 
 
     	var i:Int = 1;
-    	for( text_line in menu_objs ) {
+    	for( text_line in _menu_objs ) {
     		text_line.fadeOut(
     			0.5, 0.1*i
     			);
     		i++;
     	}
 
-    	highscore.fadeOut(0.5);
+    	_highscore.fadeOut(0.5);
 
     }
 
@@ -146,9 +146,9 @@ class MenuState extends luxe.State {
     #end
 
     override function onmousedown( event:MouseEvent ) {
-    	//machine.set('Game', {name:'Game', cube:cube});
+    	//machine.set('Game', {name:'Game', square:_square});
     	if( !readyPlay ) return;
-    	g.init();
+    	_g.init();
     	machine.set('Game');
     }
 }

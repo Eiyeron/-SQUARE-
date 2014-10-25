@@ -26,17 +26,17 @@
  	private static inline var filename   :String = "sav.dat";
 
  	#if web
- 	private var browserStorage:Storage;
+ 	private var _browserStorage:Storage;
  	#else
- 	private var ready:Bool;
+ 	private var _ready:Bool;
  	#end
 
  	public function isLocalSaveSupported():Bool {
  		#if web
- 		return browserStorage != null;
+ 		return _browserStorage != null;
 
  		#else
- 		return ready;
+ 		return _ready;
  		#end
 
  		trace("Local Storage unsupported on this target");
@@ -45,18 +45,18 @@
 
  	public function new() {
  		#if web
- 		browserStorage = Browser.getLocalStorage();
+ 		_browserStorage = Browser.getLocalStorage();
  		if( !isLocalSaveSupported())
  		trace("Local Storage unsupported. Won't be able to save anything.");
 
  		#elseif desktop
- 		ready = true;
+ 		_ready = true;
  		if( !FileSystem.exists(pathToFile)) {
  			FileSystem.createDirectory(pathToFile);
  		}
  		else if(FileSystem.exists(pathToFile) && !FileSystem.isDirectory(pathToFile)) { 				
  			trace(" Couldn't create folder ." + pathToFile + " as it exists as a file.");
- 			ready = false;
+ 			_ready = false;
  		}
 
  		if( !FileSystem.exists(pathToFile+filename)) {
@@ -73,7 +73,7 @@
  			return "Unsupported";
  		}
  		#if web
- 		return browserStorage.getItem(key);
+ 		return _browserStorage.getItem(key);
 
  		#elseif desktop
  		try {
@@ -82,7 +82,7 @@
  		catch ( e:Dynamic ) {
  			trace("Loading Error : " + e);
  			trace("Disabling save/load on this instance.");
- 			ready = false;
+ 			_ready = false;
  			return "Error.";
  		}
  		#end
@@ -97,7 +97,7 @@
 
  		#if web
  		if( isLocalSaveSupported())
- 		browserStorage.setItem(key, data);
+ 		_browserStorage.setItem(key, data);
 
  		#elseif desktop
  		try{
@@ -106,7 +106,7 @@
  		catch(e:Dynamic) {
  			trace("Saving Error: " + e);
  			trace("Disabling save/load on this instance.");
- 			ready = false;
+ 			_ready = false;
  		}
  		#end
 

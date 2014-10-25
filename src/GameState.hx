@@ -26,16 +26,16 @@ class GameState extends luxe.State {
 
 	public static inline var highscoreKey:String =" [SQUARE] highscore";
 
+	private var _bonuses   : Array<Pickup>;
+	private var _eManager  : EffectManager;
+	private var _ev        : Events;
+	private var _font      : BitmapFont;
+	private var _obstacles : Array<Obstacle>;
+	private var _score     : Float;
+	private var _score_txt : MenuText;
 	private var _square    : PlayerSquare;
 	private var _started   : Bool;
-	private var _obstacles : Array<Obstacle>;
-	private var _bonuses    : Array<Pickup>;
-	private var _ev         : Events;
-	private var _score      : Float;
-	private var _score_txt  : MenuText;
-	private var _font       : BitmapFont;
-	private var _volume     : Float;
-	private var _eManager   : EffectManager;
+	private var _volume    : Float;
 
 	public function new( data:GameStateTypedArgs ) {
 		super({ name:data.name });
@@ -43,7 +43,7 @@ class GameState extends luxe.State {
 		_obstacles = new Array<Obstacle>();
 		_bonuses = new Array<Pickup>();
 		_ev = new Events();
-		_font = Luxe.resources.find__font('open_sans');
+		_font = Luxe.resources.find_font('open_sans');
 		_score_txt = new MenuText(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 50),
 			"0", _font, 96, 0xD64937);
 		_score_txt.color.a = 0;

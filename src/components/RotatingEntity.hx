@@ -8,18 +8,19 @@ import phoenix.Quaternion;
 
 class RotatingEntity extends Component {
 
-	private var angularVelocity:Float;
+	private var _angularVelocity : Float;
+
 	public function new(name:String, angularVelocity:Float = 0) {
 		super({name:name});
-		this.angularVelocity = angularVelocity;
+		this._angularVelocity = angularVelocity;
 	}
 
 	override function update( dt:Float ) {
-		cast(entity, Sprite).rotation_z += angularVelocity * dt;
+		cast(entity, Sprite).rotation_z += _angularVelocity * dt;
 	}
 
 	public function setNewVelocity(angularVelocity:Float) {
-		this.angularVelocity = angularVelocity;
+		this._angularVelocity = angularVelocity;
 	}
 
 }
