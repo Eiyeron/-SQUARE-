@@ -38,8 +38,10 @@ class EffectManager extends Entity {
 		_text.parent = this;
 
 		_effects = new Array();
+
 		_effects.push(new SlowMotion());
 		_effects.push(new SpeedUp());
+		
 		for(comp in _effects)
 			add( comp );
 	}
@@ -67,7 +69,6 @@ class EffectManager extends Entity {
 		_text.fadeIn(_text.pos, 0.5);
 
 	}
-
 
 	public function end(name:String = null) {
 		Actuate.tween(_countdownSprite.color, 0.5, {a : 0});
