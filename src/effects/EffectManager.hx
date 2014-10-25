@@ -6,6 +6,7 @@ import luxe.Sprite;
 import luxe.Text;
 import luxe.Vector;
 import luxe.tween.Actuate;
+import luxe.utils.Maths;
 
 import components.TimedBonus;
 
@@ -26,6 +27,7 @@ class EffectManager extends Entity {
 			});
 		_countdownSprite.color.a = 1;
 		_countdownSprite.parent = this;
+
 		_text = new MenuText(
 			new Vector(Luxe.screen.mid.x, Luxe.screen.h / 4 + 20),
 			"",
@@ -34,14 +36,20 @@ class EffectManager extends Entity {
 			);
 		_text.color.a = 1;
 		_text.parent = this;
+
 		_effects = new Array();
 		_effects.push(new SlowMotion());
+		_effects.push(new SpeedUp());
 		for(comp in _effects)
 			add( comp );
 	}
 
 	public function getEffect( name: String):TimedBonus {
 		return cast(components.get(name), TimedBonus);
+	}
+
+	public function startRandom() {
+		start(_effects[Maths.random_int(0, _effects.length - 1)].name);
 	}
 
 	public function start(name : String) {

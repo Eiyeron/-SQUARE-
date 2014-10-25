@@ -144,7 +144,7 @@ class GameState extends luxe.State {
 			_score += 10;
 			Luxe.audio.play('bleep');
 			if(Maths.random_int(0, 50) == 0)
-			_eManager.start("slowmotion");
+			_eManager.startRandom();
 			});
 
 		_ev.process();
