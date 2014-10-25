@@ -1,7 +1,8 @@
-import luxe.Text;
 import luxe.Color;
+import luxe.Text;
 import luxe.Vector;
 import luxe.tween.Actuate;
+
 import phoenix.BitmapFont;
 
 class MenuText extends luxe.Text {

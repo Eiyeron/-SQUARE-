@@ -1,4 +1,5 @@
 package components;
+
 import luxe.Component;
 import luxe.Sprite;
 import luxe.Vector;

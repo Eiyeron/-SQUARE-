@@ -1,11 +1,9 @@
-import luxe.Sprite;
 import luxe.Color;
-import luxe.Vector;
 import luxe.Input;
-import luxe.collision.shapes.Polygon;
-import luxe.tween.Actuate;
-import luxe.tween.actuators.GenericActuator;
+import luxe.Sprite;
+import luxe.Vector;
 import luxe.collision.ShapeDrawerLuxe;
+import luxe.tween.Actuate;
 
 import components.Hitbox;
 

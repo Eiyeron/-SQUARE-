@@ -1,10 +1,10 @@
-import luxe.Text;
-import luxe.Color;
-import luxe.Vector;
-import luxe.States;
-import luxe.tween.Actuate;
-import luxe.Input;
 import luxe.Events;
+import luxe.Input;
+import luxe.States;
+import luxe.Text;
+import luxe.Vector;
+import luxe.tween.Actuate;
+
 import phoenix.BitmapFont;
 
 import io.LocalSave;

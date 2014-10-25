@@ -1,7 +1,8 @@
 package effects;
 
-import luxe.tween.Actuate;
 import luxe.Component;
+import luxe.tween.Actuate;
+
 import components.TimedBonus;
 
 class SlowMotion extends TimedBonus {

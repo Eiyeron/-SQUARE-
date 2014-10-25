@@ -1,10 +1,6 @@
 import luxe.Color;
-
-
-
 import luxe.Sprite;
 import luxe.Vector;
-import luxe.Events;
 import luxe.utils.Maths;
 
 import components.MovingEntity;

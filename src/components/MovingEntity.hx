@@ -1,8 +1,9 @@
 package components;
+
+import luxe.Events;
 import luxe.Component;
 import luxe.Vector;
 import luxe.utils.Maths;
-import luxe.Events;
 
 class MovingEntity extends Component {
 

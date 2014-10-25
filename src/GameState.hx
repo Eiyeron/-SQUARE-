@@ -1,21 +1,22 @@
-import luxe.Color;
-import luxe.Sprite;
-import luxe.Input;
-import luxe.Vector;
-import luxe.States;
-import luxe.tween.Actuate;
-import luxe.utils.Maths;
-import phoenix.BitmapFont;
 import luxe.Events;
+import luxe.Color;
+import luxe.Input;
+import luxe.Sprite;
+import luxe.States;
+import luxe.Vector;
 import luxe.collision.Collision;
+import luxe.utils.Maths;
+import luxe.tween.Actuate;
 
-import io.LocalSave;
-
-import effects.EffectManager;
+import phoenix.BitmapFont;
 
 import components.Hitbox;
 import components.MovingEntity;
 import components.RotatingEntity;
+
+import effects.EffectManager;
+
+import io.LocalSave;
 
 typedef GameStateTypedArgs = {
 	name : String,

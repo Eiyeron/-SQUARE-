@@ -1,6 +1,6 @@
 package effects;
+
 import luxe.Entity;
-import luxe.Component;
 import luxe.Color;
 import luxe.Sprite;
 import luxe.Text;

@@ -1,9 +1,9 @@
 package components;
 
-import luxe.collision.Collision;
-import luxe.collision.shapes.Polygon;
 import luxe.Component;
 import luxe.Vector;
+import luxe.collision.Collision;
+import luxe.collision.shapes.Polygon;
 
 class Hitbox extends Component {
 	

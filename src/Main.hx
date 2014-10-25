@@ -1,8 +1,6 @@
 import luxe.AppConfig;
 import luxe.Sprite;
 import luxe.Color;
-import luxe.Vector;
-import luxe.Input;
 import luxe.Text;
 import luxe.Parcel;
 import luxe.ParcelProgress;

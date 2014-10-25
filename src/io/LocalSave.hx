@@ -3,13 +3,12 @@
  #if web
  import js.Browser;
  import js.html.Storage;
- #else
+ #elseif desktop
+ import sys.FileSystem;
  import sys.io.File;
  import sys.io.FileInput;
  import sys.io.FileOutput;
- import sys.FileSystem;
  // import haxe.Json; // Not being used at this moment.
-
  #end
  /**
  * This class is made to save game data as a binary file in desktop targets and Browser DOM Storage for HTML target
