@@ -19,6 +19,6 @@ class SlowMotion extends TimedBonus {
 
 	public override function end() {
 		super.end();
-		Actuate.tween(Luxe, 0.5, {timescale: 1});	
+		Actuate.tween(Luxe, 0.5, {timescale: 1}, false);	
 	}
 }

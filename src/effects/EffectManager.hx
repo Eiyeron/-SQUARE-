@@ -41,9 +41,11 @@ class EffectManager extends Entity {
 
 		_effects.push(new SlowMotion());
 		_effects.push(new SpeedUp());
+		_effects.push(new PointBonus());
+		_effects.push(new Earthquake());
 		
 		for(comp in _effects)
-			add( comp );
+		add( comp );
 	}
 
 	public function getEffect( name: String):TimedBonus {
@@ -58,30 +60,48 @@ class EffectManager extends Entity {
 		
 		var effect:TimedBonus = getEffect(name);
 		effect.start();
+		var previousText = _text.text;
 
 		_text.text = effect.text;
 
-		_countdownSprite.scale.x = 1;
-		Actuate.tween(_countdownSprite.scale, effect.countdownStartingValue, {x : 0})
-			.onComplete(end, [name]);
-		Actuate.tween(_countdownSprite.color, 0.5, {a : 1});
 
-		_text.fadeIn(_text.pos, 0.5);
+
+		if( effect.countdownStartingValue == 0) {					
+			_text.fadeIn(_text.pos, 0.5, 0, function( ) {
+				_text.fadeOut(0.25, 0, 	function( ) {
+					_text.text = previousText;
+					if(previousText != "")
+						_text.fadeIn(_text.pos, 0.25);
+					} );
+				} );
+		}
+		else {
+			_countdownSprite.scale.x = 1;
+			Actuate.tween(_countdownSprite.scale, effect.countdownStartingValue, {x : 0})
+			.onComplete(end, [name]);
+			Actuate.tween(_countdownSprite.color, 0.5, {a : 1});
+			_text.fadeIn(_text.pos, 0.5);
+
+		}
 
 	}
 
 	public function end(name:String = null) {
 		Actuate.tween(_countdownSprite.color, 0.5, {a : 0});
-		_text.fadeOut(0.5);
+		_text.fadeOut(0.5, 0, function( ) {
+			_text.text = "";
+			});
 		if( name == null) return;
 		var effect:TimedBonus = getEffect(name);
 		effect.end();
 	}
 
 	public function endAll() {
-		for(comp in _effects)
-			if( comp.isRunning())
+		for(comp in _effects) {
+			if( comp.isRunning()) {
 				comp.end();
+			}			
+		}
 		end();
 	}
 }

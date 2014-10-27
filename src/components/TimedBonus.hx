@@ -17,6 +17,7 @@ class TimedBonus extends Component {
 	public function new(data:TimedBonusTypedArgs) {
 		super({name : data.name});
 		countdownStartingValue = data.countdownTime;
+		_isRunning = false;
 	}
 
 	public function isRunning():Bool {

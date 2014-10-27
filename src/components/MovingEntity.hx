@@ -27,7 +27,6 @@ class MovingEntity extends Component {
     } //init
 
     public function start<T>( data:T ) {
-		//trace( "Run!" );
 		_running = true;
 	}
 
@@ -50,11 +49,6 @@ class MovingEntity extends Component {
 			case 3:
 			if(entity.pos.y < -Obstacle.OFFSET) replace(_velocity.length + 5, _velocity.length + 10, 0, 1);
 		}
-    	/*
-        if(next_shake < Luxe.time) {
-            Luxe.camera.shake(4);
-            set_shake();
-            }*/
     } //update
 
     public function replace(minSpeed:Float = 90, maxSpeed:Float = 240, minDelay:Float = 0, maxDelay:Float = 2) {

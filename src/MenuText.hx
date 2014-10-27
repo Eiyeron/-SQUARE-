@@ -19,23 +19,29 @@ class MenuText extends luxe.Text {
 			size: size,
 			depth : 3,
 			align : align,
-            align_vertical : TextAlign.center
+			align_vertical : TextAlign.center
 
 			});
 		_originalPos = new Vector();
 		_originalPos.copy_from(pos);
 	}
 
-	public function fadeIn(newPos:Vector, length:Float = 0.5, delay:Float=0) {
+	public function fadeIn(newPos:Vector, length:Float = 0.5, delay:Float=0, onComplete:Dynamic = null) {
 		this.color.a = 0;
 		pos.copy_from(_originalPos);
 		Actuate.tween(this.color, length, {a:1}).delay(delay);
+		if( onComplete != null)
+		Actuate.tween(this.pos, length, {x:newPos.x, y:newPos.y}).delay(delay).onComplete(onComplete);
+		else
 		Actuate.tween(this.pos, length, {x:newPos.x, y:newPos.y}).delay(delay);
 
 	}
 
-	public function fadeOut(length:Float = 0.5, delay:Float = 0) {
+	public function fadeOut(length:Float = 0.5, delay:Float = 0, onComplete:Dynamic = null) {
 		Actuate.tween(this.color, length, {a:0}).delay(delay);
+		if( onComplete != null)
+		Actuate.tween(this.pos, length, {x:_originalPos.x, y:_originalPos.y}).delay(delay).onComplete(onComplete);
+		else
 		Actuate.tween(this.pos, length, {x:_originalPos.x, y:_originalPos.y}).delay(delay);
 
 	}

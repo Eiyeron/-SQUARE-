@@ -23,7 +23,7 @@ typedef GameStateTypedArgs = {
 	square : PlayerSquare
 }
 
-class GameState extends luxe.State {
+class GameState extends State {
 
 	public static inline var highscoreKey:String =" [SQUARE] highscore";
 
@@ -58,8 +58,9 @@ class GameState extends luxe.State {
 		_ev.listen("addPickup", addPickup);
 		_ev.listen("addObstacle", addObstacle);
 		_ev.listen("gameOver", gameOver);
-		_score_txt.text = "0";
-		_score = 0;	
+		//Global event for inter-object communication
+		Luxe.events.listen("bonusPoints", bonusPoints);
+		
 		_score_txt.fadeIn(Luxe.screen.mid, 1);
 		_volume = 0;
 	}
@@ -69,6 +70,8 @@ class GameState extends luxe.State {
 		cast(_square.get("rotation"), RotatingEntity).setNewVelocity( -40 );
 		Actuate.tween(_square.pos, 0.25, {x:Luxe.mouse.x, y:Luxe.mouse.y})
 		.onComplete(begin);
+		_score_txt.text = "0";
+		_score = 0;	
 	}
 
 	override function onleave<T>( data:T ) {
@@ -78,6 +81,7 @@ class GameState extends luxe.State {
 		while(_bonuses.length > 0)
 		_bonuses.pop().destroy();
 		_ev.clear();
+		Luxe.events.clear();
 		_score_txt.fadeOut();
 
 	}
@@ -94,6 +98,10 @@ class GameState extends luxe.State {
 	private function addObstacle<T>( data:T ) {
 		_obstacles.push( new Obstacle( ));
 		_ev.schedule(5 + Maths.random_float(0, 2), "addObstacle");
+	}
+
+	private function bonusPoints<T> ( data:T ) {
+		_score += 50;
 	}
 
 	private function fadeInMusic( ) {

@@ -40,12 +40,10 @@ class MenuState extends luxe.State {
 		ev = new Events();
 		ev.listen("ready", readyToPlay);
 		_localStrg = new LocalSave();
-
+		_menu_text = ["Click to play", "By Eiyeron"];
 	}
 
 	override function init() {
-		trace("begin init");
-		_menu_text = ["Click", "to", "Play", "[By Eiyeron]"];
 		_menu_objs = new Array<MenuText>();
 		_font = Luxe.resources.find_font('open_sans');
 
@@ -76,7 +74,6 @@ class MenuState extends luxe.State {
 
 		_g = new GameState({name:'Game', square:_square});
 		machine.add( _g );
-		trace("end of init");
 	}
 
 	function readyToPlay<T>( _data:T ) {
@@ -84,7 +81,6 @@ class MenuState extends luxe.State {
 	}
 
 	override function onenter<T>( _data:T ) {
-		trace("begin onenter");
 		readyPlay = false;
 		Luxe.timescale = 1;
 
