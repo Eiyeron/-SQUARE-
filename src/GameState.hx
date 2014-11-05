@@ -36,7 +36,6 @@ class GameState extends State {
 	private var _score_txt : MenuText;
 	private var _square    : PlayerSquare;
 	private var _started   : Bool;
-	private var _volume    : Float;
 
 	public function new( data:GameStateTypedArgs ) {
 		super({ name:data.name });
@@ -62,7 +61,6 @@ class GameState extends State {
 		Luxe.events.listen("bonusPoints", bonusPoints);
 		
 		_score_txt.fadeIn(Luxe.screen.mid, 1);
-		_volume = 0;
 	}
 
 	override function onenter<T>( data:T ) {
@@ -107,7 +105,6 @@ class GameState extends State {
 	private function fadeInMusic( ) {
 		Luxe.audio.loop('music');
 		#if web
-		Luxe.audio.volume("music", 1);
 		#else
 		Actuate.update(Luxe.audio.volume, 1, ["music", 0], ["music", 1]);
 		#end
