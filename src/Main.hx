@@ -49,6 +49,7 @@ class Main extends luxe.Game {
     } //ready
 
     function launchEverything( parcel:Parcel ) {
+        trace(parcel.data);
         _machine = new States({name: "machine"});
         _menuState =  new MenuState({name:'Menu', machine:_machine, square:_square});
         _menuState.init();

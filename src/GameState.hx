@@ -20,22 +20,24 @@ import io.LocalSave;
 
 typedef GameStateTypedArgs = {
 	name : String,
-	square : PlayerSquare
+	square : PlayerSquare,
+	musicPlaying : Bool
 }
 
 class GameState extends State {
 
 	public static inline var highscoreKey:String =" [SQUARE] highscore";
 
-	private var _bonuses   : Array<Pickup>;
-	private var _eManager  : EffectManager;
-	private var _ev        : Events;
-	private var _font      : BitmapFont;
-	private var _obstacles : Array<Obstacle>;
-	private var _score     : Float;
-	private var _score_txt : MenuText;
-	private var _square    : PlayerSquare;
-	private var _started   : Bool;
+	private var _bonuses      : Array<Pickup>;
+	private var _eManager     : EffectManager;
+	private var _ev           : Events;
+	private var _font         : BitmapFont;
+	private var _obstacles    : Array<Obstacle>;
+	private var _score        : Float;
+	private var _score_txt    : MenuText;
+	private var _square       : PlayerSquare;
+	private var _started      : Bool;
+	private var _musicPlaying : Bool;
 
 	public function new( data:GameStateTypedArgs ) {
 		super({ name:data.name });
@@ -49,7 +51,7 @@ class GameState extends State {
 		_score_txt.color.a = 0;
 		_score_txt.depth = -0.5;
 		_eManager = new EffectManager();
-
+		_musicPlaying = data.musicPlaying;
 	}
 
 	override function init<T>() {
@@ -61,9 +63,13 @@ class GameState extends State {
 		Luxe.events.listen("bonusPoints", bonusPoints);
 		
 		_score_txt.fadeIn(Luxe.screen.mid, 1);
+
 	}
 
 	override function onenter<T>( data:T ) {
+		var args: GameStateTypedArgs = cast data;
+		_musicPlaying = args.musicPlaying;
+
 		_square.animSmaller(0);
 		cast(_square.get("rotation"), RotatingEntity).setNewVelocity( -40 );
 		Actuate.tween(_square.pos, 0.25, {x:Luxe.mouse.x, y:Luxe.mouse.y})
@@ -103,6 +109,7 @@ class GameState extends State {
 	}
 
 	private function fadeInMusic( ) {
+		_musicPlaying = true;
 		Luxe.audio.loop('music');
 		#if web
 		#else
@@ -111,6 +118,7 @@ class GameState extends State {
 	}
 
 	private function fadeOutMusic( ) {
+		_musicPlaying = false;
 		#if web
 		Luxe.audio.stop('music');
 		#else
@@ -131,7 +139,8 @@ class GameState extends State {
 		}
 		addObstacle( null );
 		addPickup( null );
-		fadeInMusic();
+		if(_musicPlaying)
+			fadeInMusic();
 
 	}
 
@@ -181,6 +190,13 @@ class GameState extends State {
 		.onComplete(machine.set, ["Menu"]);
 	}
 
+	function toggleMute() {
+			if(_musicPlaying)
+				fadeOutMusic();
+			else
+				fadeInMusic();
+	}
+
 	override function ontouchmove( event:TouchEvent) {
 		_square.pos = event.pos;
 	}
@@ -192,6 +208,10 @@ class GameState extends State {
 	}
 
 	override function onkeydown( event:KeyEvent) {
+		if( event.keycode == Key.key_m) 
+		{
+			toggleMute();
+		}
 		if( event.keycode == Key.escape && _started)
 		gameOver(null);
 	}
