@@ -16,10 +16,10 @@ class MenuText extends luxe.Text {
 			text:text,
 			font:font,
 			color: new Color().rgb(color),
-			size: size,
+			point_size: size,
 			depth : 3,
 			align : align,
-			align_vertical : TextAlign.center
+			align_vertical : TextAlign.top
 
 			});
 		_originalPos = new Vector();

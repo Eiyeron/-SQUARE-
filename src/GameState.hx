@@ -72,7 +72,7 @@ class GameState extends State {
 
 		_square.animSmaller(0);
 		cast(_square.get("rotation"), RotatingEntity).setNewVelocity( -40 );
-		Actuate.tween(_square.pos, 0.25, {x:Luxe.mouse.x, y:Luxe.mouse.y})
+		Actuate.tween(_square.pos, 0.25, {x:Luxe.screen.cursor.pos.x, y:Luxe.screen.cursor.pos.y})
 		.onComplete(begin);
 		_score_txt.text = "0";
 		_score = 0;	
