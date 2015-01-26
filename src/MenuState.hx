@@ -18,21 +18,21 @@ typedef MenuStateTypedArgs = {
 
 class MenuState extends luxe.State {
 
-	private var _font            : BitmapFont;
-	private var _g               : GameState;
-	private var _c               : CreditsState;
-	private var _creditsText     : MenuText;
-	private var _creditsString   : String;  
-	private var _highscoreString : String;	
-	private var _highscore       : MenuText;
-	private var _localStrg       : LocalSave;
-	private var _menu_objs       : Array<MenuText>;
-	private var _menu_text       : Array<String>;
+	private var _font               : BitmapFont;
+	private var _g                  : GameState;
+	private var _c                  : CreditsState;
+	private var _creditsText        : MenuText;
+	private var _creditsString      : String;
+	private var _highscoreString    : String;
+	private var _highscore          : MenuText;
+	private var _localStrg          : LocalSave;
+	private var _menu_objs          : Array<MenuText>;
+	private var _menu_text          : Array<String>;
 	private var _musicPlaying       : Bool;
 	private var _musicPlayingString : Array<String>;
 	private var _musicPlayingText   : MenuText;
-	private var _square          : PlayerSquare;
-	private var _title           : MenuText;
+	private var _square             : PlayerSquare;
+	private var _title              : MenuText;
 
 
 	private var ev:Events;
@@ -73,14 +73,14 @@ class MenuState extends luxe.State {
 			i++;
 		}
 		_highscoreString = "Highscore unsupported here";
-		_highscore = new MenuText(new Vector(-Luxe.screen.w/6,0), 
+		_highscore = new MenuText(new Vector(-Luxe.screen.w/6,0),
 				_highscoreString,
 				_font,
 				24,
 				0xdedede,
 				TextAlign.left);
 		_highscore.color.a = 0;
-		_creditsText = new MenuText(new Vector(-Luxe.screen.w/6,Luxe.screen.h - _font.height_of(_creditsString, 24)), 
+		_creditsText = new MenuText(new Vector(-Luxe.screen.w/6,Luxe.screen.h - _font.height_of(_creditsString, 24)),
 				_creditsString,
 				_font,
 				24,
@@ -199,12 +199,12 @@ class MenuState extends luxe.State {
         if(event.pos.x >= _musicPlayingText.pos.x && event.pos.x <= _musicPlayingText.pos.x + rect.x
                 && event.pos.y >= _musicPlayingText.pos.y && event.pos.y <= _musicPlayingText.pos.y + rect.y) {
             toggleMusicPlaying();
-            return;            
+            return;
         }
 		if(event.pos.x >= _creditsText.pos.x && event.pos.x <= _creditsText.pos.x + rect.x
 				&& event.pos.y >= _creditsText.pos.y && event.pos.y <= _creditsText.pos.y + rect.y) {
 			machine.set("Credits");
-			return;            
+			return;
 		}
 		_g.init();
 		machine.set('Game', {name:'Game', square:_square, musicPlaying:_musicPlaying });
