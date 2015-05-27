@@ -19,7 +19,7 @@ class PlayerSquare extends luxe.Sprite {
 			color: new Color().rgb(0xD64937),
 			scale: new Vector(scale, scale),
 			size : new Vector(32, 32)
-			});
+		});
 		this.pos = pos;
 		this.scale = new Vector(scale, scale);
 
@@ -37,14 +37,14 @@ class PlayerSquare extends luxe.Sprite {
 	public function animBigger( delay:Int = 0 ) {
 		//if(this._animationDone == false) return;
 		Actuate.tween( this.scale, 1 - (this.scale.x - this._scaleTiny)/this._scaleDelta, {x:this._scaleBig, y:this._scaleBig} )
-        .ease( luxe.tween.easing.Elastic.easeOut )
-        .delay(delay);
+		.ease( luxe.tween.easing.Elastic.easeOut )
+		.delay(delay);
 	}
 
 	public function animSmaller( delay:Int = 0 ) {
 		//if(this._animationDone == false) return;
-        Actuate.tween(this.scale, (this.scale.x - this._scaleTiny)/this._scaleDelta, {x:this._scaleTiny, y:this._scaleTiny})
-        .ease(luxe.tween.easing.Elastic.easeIn)
-        .delay(delay);
+		Actuate.tween(this.scale, (this.scale.x - this._scaleTiny)/this._scaleDelta, {x:this._scaleTiny, y:this._scaleTiny})
+		.ease(luxe.tween.easing.Elastic.easeIn)
+		.delay(delay);
 	}
 }

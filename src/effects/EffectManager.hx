@@ -24,16 +24,16 @@ class EffectManager extends Entity {
 			color : new Color().rgb(0x333333),
 			scale : new Vector(0, 1),
 			depth : -0.5
-			});
+		});
 		_countdownSprite.color.a = 1;
 		_countdownSprite.parent = this;
 
 		_text = new MenuText(
 			new Vector(Luxe.screen.mid.x, Luxe.screen.h / 4 + 20),
 			"",
-			Luxe.resources.find_font('open_sans'),
+			Luxe.resources.font('open_sans'),
 			32, 0x333333
-			);
+		);
 		_text.color.a = 1;
 		_text.parent = this;
 
@@ -43,7 +43,7 @@ class EffectManager extends Entity {
 		_effects.push(new SpeedUp());
 		_effects.push(new PointBonus());
 		_effects.push(new Earthquake());
-		
+
 		for(comp in _effects)
 		add( comp );
 	}
@@ -57,7 +57,7 @@ class EffectManager extends Entity {
 	}
 
 	public function start(name : String) {
-		
+
 		var effect:TimedBonus = getEffect(name);
 		effect.start();
 		var previousText = _text.text;
@@ -66,14 +66,14 @@ class EffectManager extends Entity {
 
 
 
-		if( effect.countdownStartingValue == 0) {					
+		if( effect.countdownStartingValue == 0) {
 			_text.fadeIn(_text.pos, 0.5, 0, function( ) {
 				_text.fadeOut(0.25, 0, 	function( ) {
 					_text.text = previousText;
 					if(previousText != "")
-						_text.fadeIn(_text.pos, 0.25);
-					} );
+					_text.fadeIn(_text.pos, 0.25);
 				} );
+			} );
 		}
 		else {
 			_countdownSprite.scale.x = 1;
@@ -90,7 +90,7 @@ class EffectManager extends Entity {
 		Actuate.tween(_countdownSprite.color, 0.5, {a : 0});
 		_text.fadeOut(0.5, 0, function( ) {
 			_text.text = "";
-			});
+		});
 		if( name == null) return;
 		var effect:TimedBonus = getEffect(name);
 		effect.end();
@@ -100,7 +100,7 @@ class EffectManager extends Entity {
 		for(comp in _effects) {
 			if( comp.isRunning()) {
 				comp.end();
-			}			
+			}
 		}
 		end();
 	}

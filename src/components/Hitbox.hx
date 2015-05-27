@@ -6,7 +6,7 @@ import luxe.collision.Collision;
 import luxe.collision.shapes.Polygon;
 
 class Hitbox extends Component {
-	
+
 	public var boundingBox:Polygon;
 
 	public function new(_name:String, size:Vector) {
@@ -23,7 +23,7 @@ class Hitbox extends Component {
 	}
 
 	public static function testCollisionBetweenHitboxes(a:Hitbox, b:Hitbox):Bool {
-		return Collision.test(a.boundingBox, b.boundingBox) != null;
+		return Collision.shapeWithShape(a.boundingBox, b.boundingBox) != null;
 	}
 
 

@@ -15,7 +15,7 @@ class Pickup extends luxe.Sprite {
 			color: new Color().rgb(0xD64937),
 			size : new Vector(24, 24),
 			pos  : new Vector(-OFFSET, -OFFSET)
-			});
+		});
 
 		active = false;
 		add(new MovingEntity({name:"move"}));

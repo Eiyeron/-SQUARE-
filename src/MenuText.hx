@@ -21,7 +21,7 @@ class MenuText extends luxe.Text {
 			align : align,
 			align_vertical : TextAlign.top
 
-			});
+		});
 		_originalPos = new Vector();
 		_originalPos.copy_from(pos);
 	}

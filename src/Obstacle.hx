@@ -14,7 +14,7 @@ class Obstacle extends luxe.Sprite {
 			color: new Color().rgb(0xDEDEDE),
 			size : new Vector(32, 32),
 			pos  : new Vector(-OFFSET, -OFFSET)
-			});
+		});
 		active = false;
 		add(new MovingEntity({name:"move"}));
 		add(new Hitbox("hitbox", size));

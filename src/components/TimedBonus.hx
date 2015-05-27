@@ -10,7 +10,7 @@ typedef TimedBonusTypedArgs = {
 class TimedBonus extends Component {
 
 	private var _isRunning            : Bool;
-	
+
 	public var countdownStartingValue : Float;
 	public var text                   : String;
 

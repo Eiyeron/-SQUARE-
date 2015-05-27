@@ -14,7 +14,7 @@ class Earthquake extends TimedBonus {
 
 	public override function start() {
 		super.start();
-        Actuate.update(Luxe.camera.shake, 10, [15], [0]);
+		Actuate.update(Luxe.camera.shake, 10, [15], [0]);
 	}
 
 }

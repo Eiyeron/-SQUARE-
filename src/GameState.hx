@@ -45,9 +45,9 @@ class GameState extends State {
 		_obstacles = new Array<Obstacle>();
 		_bonuses = new Array<Pickup>();
 		_ev = new Events();
-		_font = Luxe.resources.find_font('open_sans');
+		_font = Luxe.resources.font('assets/open_sans/open_sans.fnt');
 		_score_txt = new MenuText(new Vector(Luxe.screen.mid.x, Luxe.screen.mid.y + 50),
-			"0", _font, 96, 0xD64937);
+		"0", _font, 96, 0xD64937);
 		_score_txt.color.a = 0;
 		_score_txt.depth = -0.5;
 		_eManager = new EffectManager();
@@ -61,7 +61,7 @@ class GameState extends State {
 		_ev.listen("gameOver", gameOver);
 		//Global event for inter-object communication
 		Luxe.events.listen("bonusPoints", bonusPoints);
-		
+
 		_score_txt.fadeIn(Luxe.screen.mid, 1);
 
 	}
@@ -75,7 +75,7 @@ class GameState extends State {
 		Actuate.tween(_square.pos, 0.25, {x:Luxe.screen.cursor.pos.x, y:Luxe.screen.cursor.pos.y})
 		.onComplete(begin);
 		_score_txt.text = "0";
-		_score = 0;	
+		_score = 0;
 	}
 
 	override function onleave<T>( data:T ) {
@@ -140,7 +140,7 @@ class GameState extends State {
 		addObstacle( null );
 		addPickup( null );
 		if(_musicPlaying)
-			fadeInMusic();
+		fadeInMusic();
 
 	}
 
@@ -150,7 +150,7 @@ class GameState extends State {
 		_score_txt.text = Std.string(Std.int(_score));
 
 		if(Lambda.exists(_obstacles, hasCollidedToCube)) {
-			_ev.queue("gameOver");			
+			_ev.queue("gameOver");
 		}
 
 		Lambda.map( Lambda.filter(_bonuses, hasCollidedToCube), function( i ) {
@@ -159,7 +159,7 @@ class GameState extends State {
 			Luxe.audio.play('bleep');
 			if(Maths.random_int(0, 50) == 0)
 			_eManager.startRandom();
-			});
+		});
 
 		_ev.process();
 	}
@@ -175,7 +175,6 @@ class GameState extends State {
 			var scoreFromFile:Float = 0;
 			scoreFromFile = Std.parseFloat(existingScore);
 			if(Math.isNaN(scoreFromFile) || scoreFromFile < _score) {
-				trace("New highscore : " + _score);
 				save.saveData(highscoreKey, Std.string(_score));
 			}
 
@@ -191,10 +190,10 @@ class GameState extends State {
 	}
 
 	function toggleMute() {
-			if(_musicPlaying)
-				fadeOutMusic();
-			else
-				fadeInMusic();
+		if(_musicPlaying)
+		fadeOutMusic();
+		else
+		fadeInMusic();
 	}
 
 	override function ontouchmove( event:TouchEvent) {
@@ -208,7 +207,7 @@ class GameState extends State {
 	}
 
 	override function onkeydown( event:KeyEvent) {
-		if( event.keycode == Key.key_m) 
+		if( event.keycode == Key.key_m)
 		{
 			toggleMute();
 		}

@@ -15,7 +15,7 @@
 
       },
     },
- 
+
     files : {
       assets : 'assets/',
       config : 'config.json'

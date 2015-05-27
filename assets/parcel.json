@@ -1,9 +1,9 @@
 {
 	"textures" : [
-        
+
     ],
     "fonts" : [
-        { "id" : "open_sans.fnt", "path" : "assets/open_sans/" }
+	        { "id" : "assets/open_sans/open_sans.fnt" }
     ],
     "sounds" : [
  	{ "id" : "assets/music/upwards.ogg", "name" : "music", "is_stream" : false },
